@@ -7,7 +7,7 @@ from kfp.dsl import InputPath, OutputPath
 from kfp import kubernetes
 
 
-@dsl.component(base_image="quay.io/modh/runtime-images:runtime-cuda-tensorflow-ubi9-python-3.9-2024a-20240523")
+@dsl.component(base_image="quay.io/modh/runtime-images:runtime-cuda-tensorflow-ubi9-python-3.11-20250730")
 def get_data(train_data_output_path: OutputPath(), validate_data_output_path: OutputPath()):
     import urllib.request
     print("starting download...")
@@ -22,7 +22,7 @@ def get_data(train_data_output_path: OutputPath(), validate_data_output_path: Ou
 
 
 @dsl.component(
-    base_image="quay.io/modh/runtime-images:runtime-cuda-tensorflow-ubi9-python-3.9-2024a-20240523",
+    base_image="quay.io/modh/runtime-images:runtime-cuda-tensorflow-ubi9-python-3.11-20250730",
     packages_to_install=["onnx", "onnxruntime", "tf2onnx"],
 )
 def train_model(train_data_input_path: InputPath(), validate_data_input_path: InputPath(), model_output_path: OutputPath()):
@@ -37,6 +37,7 @@ def train_model(train_data_input_path: InputPath(), validate_data_input_path: In
     import onnx
     import pickle
     from pathlib import Path
+    import tensorflow as tf
 
     # Load the CSV data which we will use to train the model.
     # It contains the following fields:
@@ -108,15 +109,28 @@ def train_model(train_data_input_path: InputPath(), validate_data_input_path: In
     history = model.fit(X_train, y_train, epochs=epochs,
                         validation_data=(scaler.transform(X_val.values), y_val),
                         verbose=True, class_weight=class_weights)
+						
+    # Normally we use tf2.onnx.convert.from_keras.
+    # workaround for tf2onnx bug https://github.com/onnx/tensorflow-onnx/issues/2348
+
+    # Wrap the model in a `tf.function`
+    @tf.function(input_signature=[tf.TensorSpec([None, X_train.shape[1]], tf.float32, name='dense_input')])
+    def model_fn(x):
+        return model(x)
+
+    # Convert the Keras model to ONNX
+    model_proto, _ = tf2onnx.convert.from_function(
+        model_fn,
+        input_signature=[tf.TensorSpec([None, X_train.shape[1]], tf.float32, name='dense_input')]
+    )
 
     # Save the model as ONNX for easy use of ModelMesh
-    model_proto, _ = tf2onnx.convert.from_keras(model)
     print(model_output_path)
     onnx.save(model_proto, model_output_path)
 
 
 @dsl.component(
-    base_image="quay.io/modh/runtime-images:runtime-cuda-tensorflow-ubi9-python-3.9-2024a-20240523",
+    base_image="quay.io/modh/runtime-images:runtime-cuda-tensorflow-ubi9-python-3.11-20250730",
     packages_to_install=["boto3", "botocore"]
 )
 def upload_model(input_model_path: InputPath()):

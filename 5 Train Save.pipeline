@@ -29,12 +29,12 @@
               "kubernetes_tolerations": [],
               "mounted_volumes": [],
               "filename": "1_experiment_train.ipynb",
-              "runtime_image": "quay.io/modh/runtime-images@sha256:ba76fd74b7595329a23f710485a7701caa0a7b495e60c89a23d5338ca13cf2e2"
+              "runtime_image": "quay.io/modh/runtime-images@sha256:4c3098b7a369b8dad113be97f35ea202dde0a03d3d08a2c010e3b81209b39735"
             },
             "label": "",
             "ui_data": {
               "label": "1_experiment_train.ipynb",
-              "image": "/notebook/<your-namespace>/fraud-detection/static/elyra/notebook.svg",
+              "image": "/notebook/nerc-demo-5b7ce1/fraud-detection/static/elyra/notebook.svg",
               "x_pos": 118.00000381469727,
               "y_pos": 221,
               "description": "Run notebook file"
@@ -113,14 +113,15 @@
               "kubernetes_shared_mem_size": {},
               "kubernetes_tolerations": [],
               "mounted_volumes": [],
-              "filename": "2_save_model.ipynb"
+              "filename": "2_save_model.ipynb",
+              "runtime_image": "quay.io/modh/runtime-images@sha256:4c3098b7a369b8dad113be97f35ea202dde0a03d3d08a2c010e3b81209b39735"
             },
             "label": "",
             "ui_data": {
               "label": "2_save_model.ipynb",
-              "image": "/notebook/<your-namespace>/fraud-detection/static/elyra/notebook.svg",
+              "image": "/notebook/nerc-demo-5b7ce1/fraud-detection/static/elyra/notebook.svg",
               "x_pos": 387,
-              "y_pos": 221,
+              "y_pos": 220,
               "description": "Run notebook file"
             }
           },
@@ -172,13 +173,13 @@
           "runtime": "Data Science Pipelines",
           "pipeline_defaults": {
             "kubernetes_shared_mem_size": {},
-            "kubernetes_tolerations": [],
-            "mounted_volumes": [],
-            "kubernetes_pod_annotations": [],
             "kubernetes_pod_labels": [],
-            "env_vars": [],
+            "mounted_volumes": [],
+            "kubernetes_tolerations": [],
+            "kubernetes_pod_annotations": [],
             "kubernetes_secrets": [],
-            "runtime_image": "quay.io/modh/runtime-images@sha256:ba76fd74b7595329a23f710485a7701caa0a7b495e60c89a23d5338ca13cf2e2"
+            "env_vars": [],
+            "runtime_image": "quay.io/modh/runtime-images@sha256:4c3098b7a369b8dad113be97f35ea202dde0a03d3d08a2c010e3b81209b39735"
           }
         }
       },
