@@ -1,0 +1,10 @@
+numpy
+pandas
+tensorflow
+matplotlib
+#sklearn
+scikit-learn
+seaborn
+mlflow<=2.8
+tf2onnx
+onnxruntime
