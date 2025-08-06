@@ -109,7 +109,7 @@ def train_model(train_data_input_path: InputPath(), validate_data_input_path: In
     history = model.fit(X_train, y_train, epochs=epochs,
                         validation_data=(scaler.transform(X_val.values), y_val),
                         verbose=True, class_weight=class_weights)
-						
+
     # Normally we use tf2.onnx.convert.from_keras.
     # workaround for tf2onnx bug https://github.com/onnx/tensorflow-onnx/issues/2348
 
