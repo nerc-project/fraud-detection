@@ -1,5 +1,5 @@
 # PIPELINE DEFINITION
-# Name: 6-get-data-train-upload
+# Name: 7-get-data-train-upload
 components:
   comp-get-data:
     executorLabel: exec-get-data
@@ -205,7 +205,7 @@ deploymentSpec:
           value: models/fraud/1/model.onnx
         image: quay.io/modh/runtime-images:runtime-cuda-tensorflow-ubi9-python-3.11-20250730
 pipelineInfo:
-  name: 6-get-data-train-upload
+  name: 7-get-data-train-upload
 root:
   dag:
     tasks:
